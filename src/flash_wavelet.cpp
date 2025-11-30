@@ -153,10 +153,10 @@ int streamingWaveletTransform(
             // Calculate file position: LL subband region starts at (ll_offset_x, ll_offset_y)
             // Row position: (ll_offset_y + row) * width + ll_offset_x
             size_t file_pos = (ll_offset_y + row) * width * sizeof(uint16_t) + ll_offset_x * sizeof(uint16_t);
-            stage_in.seek(file_pos);
+            stage_in->seek(file_pos);
             
             // Read row from LL subband region
-            size_t bytes_read = stage_in.read((uint8_t*)row_buffer, row_size);
+            size_t bytes_read = stage_in->read((uint8_t*)row_buffer, row_size);
             if (bytes_read != row_size) {
                 free(row_buffer);
                 temp_out->close();
@@ -725,7 +725,7 @@ int streamingWaveletTransform(
             size_t remaining = total_size;
             while (remaining > 0) {
                 size_t to_read = (remaining > copy_buffer_size) ? copy_buffer_size : remaining;
-                size_t bytes_read = temp_read.read(copy_buffer, to_read);
+                size_t bytes_read = temp_read->read(copy_buffer, to_read);
                 if (bytes_read != to_read) {
                     free(copy_buffer);
                     temp_read->close();
@@ -738,7 +738,7 @@ int streamingWaveletTransform(
                     filesystem->remove(temp_file);
                     return -21;
                 }
-                size_t bytes_written = final_write.write(copy_buffer, bytes_read);
+                size_t bytes_written = final_write->write(copy_buffer, bytes_read);
                 if (bytes_written != bytes_read) {
                     free(copy_buffer);
                     temp_read->close();

@@ -28,7 +28,8 @@ public:
     // Open a file
     // Returns a pointer to IFile object, or NULL on failure
     // Caller is responsible for deleting the IFile object when done
-    virtual IFile* open(const char* filename, FileMode mode) = 0;
+    // Accepts int to be compatible with Arduino FILE_READ/FILE_WRITE macros
+    virtual IFile* open(const char* filename, int mode) = 0;
     
     // Remove/delete a file
     // Returns true on success, false on failure
